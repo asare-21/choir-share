@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+:root{
+    --shadow:0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12);
+              --light-shadow:0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12);
+             --more-light-shadow:
+              0 4px 4px rgba(0,0,0,0.12);
+            }
+   
+* {
+	margin: 0px; 
+	padding: 0px; 
+	box-sizing: border-box;
+}              
+html,body{  
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0;
+    height: 100%;
+}
+body{
+    min-width: 300px;
+}
+
+header{
+    height: 10vh;
+    width: 100%;
+   background: white;
+   box-shadow: var(--light-shadow);
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 20px;
+   position: relative;
+}
+
+header nav{
+    transition: all 1s linear;
+    visibility: hidden;
+    transform: translateY(-1000px);
+}
+
+header nav.show{
+    visibility: visible;
+    transform: translateY(0px);
+    transition: all 1s linear;
+
+}
+
+header .burger{
+    display: none !important;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+header .burger > div{
+    height: 4px;
+    width: 95%;
+    background: black;
+    margin: 3px;
+    border-radius: 10px;
+}
+.member_name{
+    width: auto;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    background: royalblue;
+    color: white;
+    display: flex;
+    cursor: pointer;
+}
+header .ul{
+    margin-left: auto;
+    height: 100%;
+    width: 30%;
+ display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+cursor: pointer;
+position: absolute;
+right: 10px;
+}
+header .ul li{
+    list-style: none;
+    cursor: pointer;
+    margin: 10px;
+}
+li a{
+    color:black;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+@media screen and (max-width:850px){
+header .ul{
+    width: 60%;
+    height: 100%;
+    margin-left: auto;
+    display: flex;
+    justify-content: start;
+    position: absolute;
+    right: 0;
+}
+header .ul li{
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ul li a{
+    text-align: center;
+}
+}
+
+
+@media screen and (max-width:700px){
+   header .burger{
+        display: flex !important;
+    }
+header .ul{
+    width: 50%;
+    display: none;
+
+}
+
+header nav{
+    margin-left: auto;
+    height: auto;
+    width: 100%;
+    z-index: 5;
+    background: royalblue;
+    box-shadow: var(--light-shadow);
+    position: absolute;
+    top: 7vh;
+    right: 0px;
+}
+header nav ul{
+     display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    width: 100%;
+}
+header nav li{
+    height: 10vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+header nav li a{
+    text-align: center;
+}
+
+}

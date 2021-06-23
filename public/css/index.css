@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+:root{
+    --shadow:0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12);
+              --light-shadow:0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12);
+}
+
+html,body{
+    font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: none;
+    min-width: 300px;
+}
+body{
+    height: 100vh;
+    width: auto;
+    position: relative;
+}
+.container{
+    width: 70%;
+    height: 90%;
+    background: royalblue;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+     box-shadow: var(--shadow);
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+    
+}
+.container_child_1{
+    height:100%;
+    width: 40%;
+    background-image: url('../assets/bg.jpg');
+    object-fit: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: var(--light-shadow);
+}
+.container_child_1 svg{
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+.container_child_2{
+    height:100%;
+    width: 60%;
+   
+}.container_child_2 form{
+    width: 100%;
+    height: 100%;
+     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.login-item{
+    padding: 10px;
+    width: 300px;
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-item input,button{
+    width: 1000%;
+    padding: 15px;
+    border: none;
+    box-shadow: var(--light-shadow);
+    border-radius: 5px;
+    background-color: white;
+}
+button{
+    font-weight: 600;
+}
+.new-user{
+    width: 100%;
+ 
+}
+.new-user a{
+    color: white;
+}
+.new-user a:hover{
+    color: blue;
+    font-size: 16px;
+    transition: .1s ease-in;
+}
+button{
+    width: 100%;
+}
+button:hover{
+    transition: .1s ease-in;
+    background: royalblue;
+    color: white;
+    box-shadow: var(--shadow);
+}
+.login-item input:hover{
+    border: 2px solid black;
+    transition:  .02s ease-in;
+
+}
+
+
+@media screen and (max-width:700px){
+    .container_child_1{
+        display: none;
+    }
+    .container_child_2{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:470px){
+    .container_child_2{
+    margin: 10px;
+
+    }
+.login-item{
+    width: 100%;
+    padding: 10px;
+}
+}

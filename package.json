@@ -1,0 +1,18 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm start",
+    "start":"npm start"
+  },
+  "keywords": [
+    "Assingment"
+  ],
+  "author": "Joseph Asare",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
