@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="public/assets/css/Footer-Basic.css">
         <link rel="stylesheet" href="public/assets/css/Navigation-with-Button.css">
         <link rel="stylesheet" href="public/assets/css/styles.css">
-        <script src="/public/js/index.js" async></script>
+        <script src="/public/js/index.js" defer></script>
     </head>
 
     <body style="background: var(--bs-white);">
@@ -108,6 +108,8 @@
         <script>
             var user = '<%- user %>'
         </script>
+        <script src="/socket.io/socket.io.js"></script>
+
     </body>
 
 </html>

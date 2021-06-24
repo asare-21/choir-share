@@ -5,6 +5,7 @@ const new_account = require("./routes/new_account");
 const homeRoute = require("./routes/home");
 const uploads = require("./routes/uploads");
 const logout = require("./routes/logout");
+const approve = require("./routes/approve");
 const path = require("path");
 const session = require("express-session");
 const contentful_management = require("contentful-management");
@@ -12,6 +13,9 @@ const contentful = require("contentful");
 const { passport } = require("./passport-config");
 const error = require("./routes/404");
 const mongoose = require("mongoose");
+const httpServer = require("http").createServer(app);
+const io = require("socket.io")(httpServer);
+
 require("dotenv").config();
 
 //middlewares
@@ -45,6 +49,7 @@ app.use("/uploads", uploads);
 app.use("/logout", loginRoute);
 app.use("/create-account", new_account);
 app.use("/logout", logout);
+app.use("/approve", approve);
 app.use(error);
 
 mongoose
@@ -53,7 +58,8 @@ mongoose
     { useFindAndModify: true, useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
-    app.listen(process.env.PORT || 3000, () => {
-      console.log("Server running");
-    });
+    httpServer.listen(process.env.PORT || 3000);
+    console.log("Server running");
   });
+
+module.exports.io = io;

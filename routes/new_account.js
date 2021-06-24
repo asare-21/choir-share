@@ -3,7 +3,7 @@ const router = Router();
 const { user } = require("../models/userMode");
 const bcrypt = require("bcryptjs");
 const salt = 10;
-
+const io = require("../index");
 // validation
 function validateEmail(email) {
   const re =
@@ -33,6 +33,9 @@ router.get("/", (req, res) => {
 */
 //
 router.post("/", (req, res) => {
+  io.on("connection", (socket) => {
+    socket.broadcast.emit("hello", "world");
+  });
   let userDetails;
   // create an account and rederiect to the login page
   if (validateEmail(req.body.email)) {
@@ -52,7 +55,15 @@ router.post("/", (req, res) => {
               if (result == null) {
                 res.redirect("/");
                 user(userDetails).save();
+                io.on("connection", (socket) => {
+                  console.log(socket);
+                  socket.broadcast.emit("new_member", "world");
+                });
               } else {
+                io.on("connection", (socket) => {
+                  console.log(socket);
+                  socket.broadcast.emit("new_member", "world");
+                });
                 res.render("new-account.ejs", {
                   haserror: true,
                   error: `An account with ${req.body.email} exists`,

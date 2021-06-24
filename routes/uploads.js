@@ -17,6 +17,7 @@ router.get("/", (req, res) => {
                 id: new_user._id,
                 name: new_user.name,
                 phone: new_user.phone,
+                email: new_user.email,
               });
             }
           });

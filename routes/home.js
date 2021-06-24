@@ -25,6 +25,7 @@ router.get("/", (req, res) => {
                 id: new_user._id,
                 name: new_user.name,
                 phone: new_user.phone,
+                email: new_user.email,
               });
             }
           });
@@ -46,19 +47,16 @@ router.get("/", (req, res) => {
         }
       });
     } else {
-      res.render(
-        "index.ejs",
-        JSON.stringify({
-          user: {
-            name: req.session.passport.user.name,
-            phone: req.session.passport.user.phone,
-            email: req.session.passport.user.email,
-            uploads: req.session.passport.user.uploads,
-            admin: req.session.passport.user.admin,
-            id: req.session.passport.user.id,
-          },
-        })
-      );
+      res.render("index.ejs", {
+        user: JSON.stringify({
+          name: req.session.passport.user.name,
+          phone: req.session.passport.user.phone,
+          email: req.session.passport.user.email,
+          uploads: req.session.passport.user.uploads,
+          admin: req.session.passport.user.admin,
+          id: req.session.passport.user.id,
+        }),
+      });
     }
   }
 });
