@@ -8,7 +8,7 @@ function renderUnApproved(pendingUsers) {
   var count = 0;
   pendingUsers.forEach((user) => {
     count += 1;
-    const notificationTemplate = `<div role="alert" id=${user.id} class=" alert alert-warning"><span><strong>Pending</strong>${user.name}, with the email address ${user.email}, and phone number ${user.phone}, wants to be a member of the choir. Click this alert to aprroved the memeber's registration.</span></div>`;
+    const notificationTemplate = `<div role="alert" class="alert alert-warning"><span><strong>Pending</strong>${user.name}, with the email address ${user.email}, and phone number ${user.phone}, wants to be a member of the choir. Click this alert to aprroved the memeber's registration.</span></div>`;
     htmlData += notificationTemplate;
   });
   notifications.appendChild(htmlData);
