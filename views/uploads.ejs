@@ -19,12 +19,12 @@
         <div class="container"><a class="navbar-brand" href="/library">Choir Share</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link active" href="/library">Library</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/library">Library</a></li>
                     <li class="nav-item"><a class="nav-link active" href="/uploads">My Uploads</a></li>
                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Notifications</a>
                         <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
                     </li>
-                </ul><span class="navbar-text actions"> <a class="login" href="#"></a><a class="btn btn-light action-button" role="button" href="#">Logout</a></span>
+                </ul><span class="navbar-text actions"> <a class="login" href="#"></a><a class="btn btn-light action-button" role="button" href="/logout">Logout</a></span>
             </div>
         </div>
     </nav>
@@ -88,6 +88,9 @@
         <p class="copyright">Company Name © 2021</p>
     </footer>
     <script src="public/assets/bootstrap/js/bootstrap.min.js"></script>
+            <script>
+            var user = '<%- user %>'
+        </script>
 </body>
 
 </html>

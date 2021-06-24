@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-// const user = require("../model/user-model");
+const { user } = require("../models/userMode");
 const bcrypt = require("bcryptjs");
 const salt = 10;
 
@@ -42,24 +42,23 @@ router.post("/", (req, res) => {
           bcrypt.hash(req.body.password, salt, (err, hash) => {
             userDetails = {
               name: req.body.name,
-              location: req.body.location,
               phone: req.body.phone,
               email: req.body.email,
               password: hash,
             };
             // creating a user in the database
-            // user.findOne({ email: userDetails.email }, (err, result) => {
-            //   // checking foz an existing user
-            //   if (result == null) {
-            //     res.redirect("/validate");
-            //     user(userDetails).save();
-            //   } else {
-            //     res.render("new-account.ejs", {
-            //       haserror: true,
-            //       error: `An account with ${req.body.email} exists`,
-            //     });
-            //   }
-            // });
+            user.findOne({ email: userDetails.email }, (err, result) => {
+              // checking foz an existing user
+              if (result == null) {
+                res.redirect("/");
+                user(userDetails).save();
+              } else {
+                res.render("new-account.ejs", {
+                  haserror: true,
+                  error: `An account with ${req.body.email} exists`,
+                });
+              }
+            });
           });
         });
       } else {

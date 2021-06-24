@@ -10,34 +10,6 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/mobile", (req, res, next) => {
-  passport.authenticate("local", { session: true }, (err, user, info) => {
-    if (err) {
-      return res.json({
-        auth: false,
-        error: err,
-      });
-    }
-    if (!user) {
-      return res.json({
-        auth: false,
-        error: "Invalid Email Address or Password",
-      });
-    }
-
-    req.logIn(user, (err) => {
-      if (err) {
-        return res.status(400).json({ auth: false, error: err });
-      } else {
-        return res.json({
-          auth: true,
-          user: user,
-        });
-      }
-    });
-  })(req, res, next);
-});
-
 router.post("/", (req, res, next) => {
   passport.authenticate("local", { session: true }, (err, user, info) => {
     if (err) {
@@ -57,8 +29,16 @@ router.post("/", (req, res, next) => {
       if (err) {
         return res.status(400).json({ errors: err });
       } else {
-        // console.log(req.user);
-        return res.redirect("/shop/1");
+        if (!user.approved) {
+          return res.render("login.ejs", {
+            haserror: true,
+            error:
+              "Your account has not been approved. Please contact the administrator.",
+          });
+        } else {
+          // if the login details are approved, the user is redirected to the library page
+          return res.redirect("/library");
+        }
       }
     });
   })(req, res, next);

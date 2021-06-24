@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const localStrategy = require("passport-local").Strategy;
-// const user = require("../model/user-model");
+const { user } = require("./models/userMode");
 const salt = 10;
 
 passport.serializeUser((user, done) => {
@@ -11,6 +11,9 @@ passport.serializeUser((user, done) => {
     email: user.email,
     phone: user.phone,
     location: user.location,
+    approved: user.approved,
+    uploads: user.uploads,
+    admin: user.admin,
   });
 });
 passport.deserializeUser((id, done) => {
@@ -25,27 +28,26 @@ passport.use(
     { usernameField: "email", passwordField: "password" },
     (email, password, done) => {
       // console.log(email, password);
-      //   user.findOne({ email: email }, (err, result) => {
-      //     console.log(result);
-      //     if (result !== null || result !== undefined) {
-      //       bcrypt.compare(password, result.password, (err, match) => {
-      //         // console.log(match);
-      //         if (err) throw err;
-      //         if (match) {
-      //           return done(null, result);
-      //         } else {
-      //           return done(null, false, {
-      //             message: "Wrong Credentials",
-      //           });
-      //         }
-      //       });
-      //     } else {
-      //       res.render("login.ejs", {
-      //         haserror: true,
-      //         error: "Wrong Credentials",
-      //       });
-      //     }
-      //   });
+      user.findOne({ email: email }, (err, result) => {
+        console.log(result == null);
+        if (!(result == null) || !(result == undefined)) {
+          bcrypt.compare(password, result.password, (err, match) => {
+            // console.log(match);
+            if (err) throw err;
+            if (match) {
+              return done(null, result);
+            } else {
+              return done(null, false, {
+                message: "Wrong Credentials",
+              });
+            }
+          });
+        } else {
+          return done(null, false, {
+            message: "Wrong Credentials",
+          });
+        }
+      });
     }
   )
 );

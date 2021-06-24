@@ -4,18 +4,21 @@ const loginRoute = require("./routes/login");
 const new_account = require("./routes/new_account");
 const homeRoute = require("./routes/home");
 const uploads = require("./routes/uploads");
+const logout = require("./routes/logout");
 const path = require("path");
 const session = require("express-session");
 const contentful_management = require("contentful-management");
 const contentful = require("contentful");
 const { passport } = require("./passport-config");
 const error = require("./routes/404");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 //middlewares
 app.set("view engine", "ejs");
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(
   session({
     secret: Date.now().toString(),
@@ -41,8 +44,16 @@ app.use("/home", homeRoute);
 app.use("/uploads", uploads);
 app.use("/logout", loginRoute);
 app.use("/create-account", new_account);
+app.use("/logout", logout);
 app.use(error);
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Server running");
-});
+mongoose
+  .connect(
+    `mongodb+srv://${process.env.db_username}:${process.env.db_password}@cluster0.hee6a.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+    { useFindAndModify: true, useNewUrlParser: true, useUnifiedTopology: true }
+  )
+  .then(() => {
+    app.listen(process.env.PORT || 3000, () => {
+      console.log("Server running");
+    });
+  });
