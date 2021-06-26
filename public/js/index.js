@@ -316,9 +316,13 @@ function renderSongs(songs) {
         </button>
       </div>
       <div class="modal-body">
-       <code class="card-title">${song.composer}</code>
+       <p class="card-title">Composed By </p> <code class="card-title">${
+         song.composer
+       }</code>
        <hr>
-         <h6 class="card-title">${song.lyrics}</h6>
+         <h6 class="card-title" style="white-space: break-spaces;">${
+           song.lyrics
+         }</h6>
        <hr>
        ${song.audioParts.map((audio) => {
          const template = `
@@ -347,10 +351,4 @@ function renderSongs(songs) {
     div.innerHTML = cardTemplate;
     document.querySelector(".row").appendChild(div);
   });
-}
-
-function uploadSongPart() {
-  /**
-   * Used to upload a song part
-   */
 }
