@@ -11,5 +11,5 @@ as well as review uploaded compositions or lyrics. [Done]
 
 
 ADMIN Account
-email: joasare019@gmail.com
+email: admin@example.com
 password: *Kwesi2001/

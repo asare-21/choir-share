@@ -4,19 +4,28 @@ A simple platform for choristers to share choir songs on parts and ...
 
 ## Installation
 
-Run [npm] install to install all dependencies.
+Run npm install to install all dependencies.
 
 ```bash
 npm install
 ```
 
 ## Usage
+```bash
 admin login credentials:
 
 email: admin@example.com
 password: *Kwesi2001/
+```
 
-
+## Remember
+1. Setup a mongodb cluster and place the crentials in your .env file
+    db_username
+    db_password
+2. Create a cloudinary ... and place the credentials in the .evn file as well
+    api_key
+    cloud_name
+    api_secret
 
 ## Features
 1. Admin has live notifiactions and a sound to notify when a new member registers.
