@@ -65,7 +65,6 @@ ${userData.uploads.map((d) => `<option value= "${d._id}" >${d.name}</option>`)}
   <option value="Soprano">Soprano</option>
   <option value="Full Track">Full Track</option>
 </select>
-    <input type="text" required=true class="form-control" id="part_name" placeholder="Part Name">
   </div>
   
   <div class="form-group">
@@ -89,7 +88,7 @@ function updateSong(e) {
   const formData = new FormData();
   const form = document.querySelector(".new_song_upload");
   formData.append("audio", e.target.querySelector(".file").files[0]);
-  formData.append("partName", e.target.querySelector("input").value);
+  formData.append("partName", e.target.querySelector("#part_name").value);
   document.querySelector(".alert").style.display = "block";
   fetch(`/approve/new_song_part/${e.target.querySelector("select").value}`, {
     method: "POST",
@@ -216,6 +215,11 @@ window.addEventListener("load", () => {
           .forEach((audio) => {
             audio.src = audio.getAttribute("data-src");
           });
+        document.querySelectorAll(".close_btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            $("#" + e.target.href.split("#")[1]).modal("hide");
+          });
+        });
       });
     });
     userData.admin
@@ -328,7 +332,7 @@ function renderSongs(songs) {
        })}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary close_btn" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
