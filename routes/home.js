@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
       var pendingUsers = [];
       user.find((err, result) => {
         if (result !== null || result !== undefined) {
-          console.log(err, result);
+          // console.log(err, result);
           result.forEach((new_user) => {
             if (!new_user.approved) {
               pendingUsers.push({
@@ -35,7 +35,7 @@ router.get("/", (req, res) => {
           let songs = "";
           song.find((err, result) => {
             songs = result;
-            console.log(result);
+            // console.log(result);
             res.render(
               "index.ejs",
 
@@ -57,7 +57,7 @@ router.get("/", (req, res) => {
     } else {
       let songs = "";
       song.find((err, result) => {
-        console.log(result);
+        // console.log(result);
         songs = result;
         res.render("index.ejs", {
           user: JSON.stringify({

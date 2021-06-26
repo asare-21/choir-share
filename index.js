@@ -73,7 +73,6 @@ io.on("connection", (socket) => {
   personEventEmitter.on("change", (change) => {
     let pendingUser = [];
     user.find((err, result) => {
-      console.log(result);
       if (change.operationType == "insert") {
         socket.emit("new_member", result);
       }

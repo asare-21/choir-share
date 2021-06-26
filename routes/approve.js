@@ -69,7 +69,7 @@ router.post(
       req.file.path,
       { resource_type: "video" },
       function (error, result) {
-        console.log(result, error);
+        // console.log(result, error);
         song.findByIdAndUpdate(
           req.params.songId,
           {
