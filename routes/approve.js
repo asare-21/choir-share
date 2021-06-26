@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const { user } = require("../models/userMode");
-
+const { song } = require("../models/songModel");
 router.post("/:id", (req, res) => {
   // find user by id and update the acount status
   console.log(req.body);
@@ -18,18 +18,34 @@ router.post("/:id", (req, res) => {
       if (true) {
         console.log(result);
         user.find((err, result) => {
-          result.forEach((r) => {
-            if (!r.approved) {
-              pendingUser.push(result);
-            }
-          });
+          res.json({ result });
         });
-        res.json({ pendingUser });
       } else {
         res.redirect("/");
       }
     }
   );
+});
+
+// endpoint for create a new song. For admins only
+router.post("/new_song/:adminId", (req, res) => {
+  user.findById(req.params.adminId, (err, result) => {
+    if (!result.admin) {
+      res.status(201).json({ error: "access is denied" });
+    } else {
+      song(req.body).save(err, (data) => {
+        song.find((err, result) => {
+          console.log(result);
+          res.json({ result });
+        });
+      });
+    }
+  });
+});
+
+// endpoint for updating song part. For members only
+router.post("/new_song/:songId", (req, res) => {
+  user.findById(req.params.songIdId, (err, result) => {});
 });
 
 module.exports = router;

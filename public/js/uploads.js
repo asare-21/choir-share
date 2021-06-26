@@ -1,8 +1,26 @@
 const userData = JSON.parse(user);
-const socket = io();
+const socket = io("/");
 
 socket.on("new_member", (...re) => {
-  console.log(re);
+  const audio = new Audio("public/assets/notification_sound.wav");
+  audio.play();
+  const notifications = document.querySelector(".notifications");
+  const notifications_count = document.querySelector(".count");
+  notifications.innerHTML = "";
+  var count = 0;
+  pendingUsers.forEach((user) => {
+    count += 1;
+    const div = document.createElement("div");
+    div.role = "alert";
+    div.id = user.id;
+    div.className = "notes alert alert-warning";
+    div.style = "cursor:pointer";
+    const notificationTemplate = `<span id="${user.id}" class="notes"><strong class="text-danger">Pending Approval: </strong>${user.name}, with the email address ${user.email}, and phone number ${user.phone}, wants to be a member of the choir. Click this alert to aprrove the registration of ${user.name}.</span>`;
+    div.innerHTML = notificationTemplate;
+    notifications.appendChild(div);
+  });
+  notifications_count.textContent = count;
+  // audio.
 });
 
 function renderUnApproved(pendingUsers) {

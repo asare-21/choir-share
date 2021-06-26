@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-
+const { user } = require("../models/userMode");
 router.get("/", (req, res) => {
   console.log(req.session.passport);
   if (req.session.passport == undefined) {

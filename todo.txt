@@ -1,7 +1,8 @@
 1. Enable the registration of choir members [DONE]
 2. Allow an administrator to approve member registrations [DONE]
-3. Allow and administrator to record song details such as the name of the song,
-composer, and composition or lyrics
+
+3. Allow an administrator to record song details such as the name of the song,
+composer, and composition or lyrics [Done]
 4. Allow choir members to record parts of a created song by defining the part name and
 uploading an audio file of a recording of the part.
 5. Allow members to browse song and song parts in order to listen to uploaded audio files

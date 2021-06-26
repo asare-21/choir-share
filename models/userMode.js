@@ -5,22 +5,6 @@ const audioPartSchema = Schema({
   audioLink: { type: String, required: true },
 });
 
-const uploadSchema = Schema({
-  composer: {
-    type: String,
-    required: true,
-  },
-  lyrics: {
-    type: String,
-    required: true,
-  },
-  audioParts: [audioPartSchema],
-  audio: {
-    type: String,
-    required: true,
-  },
-});
-
 const userSchema = Schema({
   email: {
     type: String,
@@ -38,7 +22,6 @@ const userSchema = Schema({
     type: String,
     required: true,
   },
-  uploads: [uploadSchema],
   approved: {
     type: Boolean,
     default: false,

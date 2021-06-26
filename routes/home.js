@@ -1,11 +1,14 @@
 const { Router } = require("express");
 const router = Router();
 const { user } = require("../models/userMode");
+const io = require("../index");
+const { song } = require("../models/songModel");
 /**
  * This is the home page where you can view all your uploads and others
  * if you are an admin, you have the opportunity to view all the unapproved registration requests
  *
  */
+
 router.get("/", (req, res) => {
   console.log(req.session.passport);
   if (req.session.passport == undefined) {
@@ -29,33 +32,43 @@ router.get("/", (req, res) => {
               });
             }
           });
-          res.render(
-            "index.ejs",
+          let songs = "";
+          song.find((err, result) => {
+            songs = result;
+            console.log(result);
+            res.render(
+              "index.ejs",
 
-            {
-              user: JSON.stringify({
-                name: req.session.passport.user.name,
-                phone: req.session.passport.user.phone,
-                email: req.session.passport.user.email,
-                uploads: req.session.passport.user.uploads,
-                admin: req.session.passport.user.admin,
-                id: req.session.passport.user.id,
-                pending: pendingUsers,
-              }),
-            }
-          );
+              {
+                user: JSON.stringify({
+                  name: req.session.passport.user.name,
+                  phone: req.session.passport.user.phone,
+                  email: req.session.passport.user.email,
+                  uploads: songs,
+                  admin: req.session.passport.user.admin,
+                  id: req.session.passport.user.id,
+                  pending: pendingUsers,
+                }),
+              }
+            );
+          });
         }
       });
     } else {
-      res.render("index.ejs", {
-        user: JSON.stringify({
-          name: req.session.passport.user.name,
-          phone: req.session.passport.user.phone,
-          email: req.session.passport.user.email,
-          uploads: req.session.passport.user.uploads,
-          admin: req.session.passport.user.admin,
-          id: req.session.passport.user.id,
-        }),
+      let songs = "";
+      song.find((err, result) => {
+        console.log(result);
+        songs = result;
+        res.render("index.ejs", {
+          user: JSON.stringify({
+            name: req.session.passport.user.name,
+            phone: req.session.passport.user.phone,
+            email: req.session.passport.user.email,
+            uploads: songs,
+            admin: req.session.passport.user.admin,
+            id: req.session.passport.user.id,
+          }),
+        });
       });
     }
   }

@@ -13,8 +13,12 @@ const contentful = require("contentful");
 const { passport } = require("./passport-config");
 const error = require("./routes/404");
 const mongoose = require("mongoose");
+const { use } = require("./routes/404");
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer);
+const { user } = require("./models/userMode");
+
+const personEventEmitter = user.watch();
 
 require("dotenv").config();
 
@@ -62,4 +66,18 @@ mongoose
     console.log("Server running");
   });
 
-module.exports.io = io;
+io.on("connection", (socket) => {
+  console.log("connected");
+  personEventEmitter.setMaxListeners(250);
+  personEventEmitter.on("change", (change) => {
+    let pendingUser = [];
+    user.find((err, result) => {
+      console.log(result);
+      if (change.operationType == "insert") {
+        socket.emit("new_member", result);
+      }
+    });
+  });
+});
+
+// module.exports = io;
