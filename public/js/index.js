@@ -309,8 +309,16 @@ function renderSongs(songs) {
     }" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">${song.name}</h5>
+      <div class="modal-header d-flex justify-content-evenly">
+ 
+     <a href="#">
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+</svg>
+     </a>
+      
+        <h5 class="modal-title" id="staticBackdropLabel">  ${song.name}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -320,7 +328,7 @@ function renderSongs(songs) {
          song.composer
        }</code>
        <hr>
-         <h6 class="card-title" style="white-space: break-spaces;">${
+         <h6 class="card-title lyrics" style="white-space: break-spaces;">${
            song.lyrics
          }</h6>
        <hr>
@@ -351,4 +359,56 @@ function renderSongs(songs) {
     div.innerHTML = cardTemplate;
     document.querySelector(".row").appendChild(div);
   });
+}
+
+const pencil = document.querySelector(".bi-pencil-square");
+let clicked = false;
+pencil.addEventListener("click", switchToTextArea);
+
+function switchToTextArea(e) {
+  /**
+   * This is used to swap the lyrics to a textarea
+   */
+  const lyrics = document.querySelector(".lyrics").textContent;
+  document.querySelector(".lyrics").textContent = "";
+  // const textArea = document.createElement("textarea");
+  // textArea.value = lyrics;
+  const textArea = `
+  <textarea required=true class="form-control" id="song_lyrics" name="song_lyrics" rows="5" >${lyrics}</textarea>
+    <div class="modal-footer">
+        <button type="button" class="btn text-white bg-success upload_changes" >Save</button>
+      </div>
+`;
+  document.querySelector(".lyrics").innerHTML = textArea;
+  document
+    .querySelector(".upload_changes")
+    .addEventListener("click", editLyrics);
+}
+
+function editLyrics(e) {
+  const id =
+    e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id.split(
+      "collapseExample"
+    )[1];
+  console.log(id);
+  const lyrics =
+    e.target.parentElement.parentElement.querySelector("textarea").value;
+  fetch(`/approve/lyrics_update/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ lyrics: lyrics }),
+  }).then((response) => {
+    response.json().then((data) => {
+      $(".modal").modal("hide");
+      window.location = "/library";
+    });
+  });
+  /**
+   * When the pencil icon is clicked,
+   * the lyrics should be replaced with a textarea
+   * After the corrections are made, the save button should be clicked
+   * which will make a request to save the changes in the database
+   */
 }

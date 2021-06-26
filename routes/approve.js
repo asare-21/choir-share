@@ -93,4 +93,18 @@ router.post(
   }
 );
 
+router.post("/lyrics_update/:songId", (req, res) => {
+  if (req.session.passport == undefined)
+    return res.json({ err: "access denied" }).status(400);
+
+  console.log(req.body.lyrics, req.params.songId);
+  song.findByIdAndUpdate(
+    req.params.songId,
+    { lyrics: req.body.lyrics },
+    (err, result) => {
+      res.json({ msg: "received" });
+      // res.redirect("/library");
+    }
+  );
+});
 module.exports = router;
