@@ -10,6 +10,8 @@ Run npm install to install all dependencies.
 npm install
 
 npm start
+
+navigate to localhost:3000 in your browser
 ```
 
 ## Usage
