@@ -99,6 +99,7 @@ function updateSong(e) {
     });
     document.querySelector(".alert").style.display = "none";
     $("#exampleModal").modal("hide");
+    window.location = "/library";
   });
 }
 // function to create a song part
@@ -121,7 +122,6 @@ function createSong(e) {
     response.json().then((songs) => {
       console.log(songs);
       if (songs.result == null) return;
-
       document.querySelector(".row").innerHTML = "";
       songs.result.forEach((song) => {
         const cardTemplate = ` <div class="card" id="${song._id}">
@@ -134,7 +134,6 @@ function createSong(e) {
                               0,
                               100
                             )}...</p>
-                          
                             <p class="text-muted card-subtitle mb-2">Uploader: ${song.createdBy.slice(
                               0,
                               80
@@ -151,6 +150,7 @@ function createSong(e) {
         document.querySelector(".row").appendChild(div);
       });
       $("#exampleModal").modal("hide");
+      window.location = "/library";
     });
   });
 }
@@ -269,6 +269,7 @@ window.addEventListener("load", () => {
                 }
               });
               notifications_count.textContent = count;
+              window.location = "/library";
             });
           });
       });
