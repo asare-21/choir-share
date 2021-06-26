@@ -177,9 +177,9 @@ socket.on("new_member", (...re) => {
     }
   });
   notifications_count.textContent = count;
-  window.location = "/library";
-  // console.log(count);
-  // audio.
+  setTimeout(() => {
+    window.location = "/library";
+  }, 3000);
 });
 
 function renderUnApproved(pendingUsers) {
