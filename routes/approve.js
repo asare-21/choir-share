@@ -2,6 +2,21 @@ const { Router } = require("express");
 const router = Router();
 const { user } = require("../models/userMode");
 const { song } = require("../models/songModel");
+var multer = require("multer");
+var fs = require("fs");
+var storage = multer.memoryStorage();
+const cloudinary = require("cloudinary");
+const datauri = require("datauri");
+require("dotenv").config();
+var upload = multer({ dest: "uploads/" });
+
+cloudinary.config({
+  cloud_name: process.env.cloud_name,
+  api_key: process.env.api_key,
+  api_secret: process.env.api_secret,
+  secure: true,
+});
+
 router.post("/:id", (req, res) => {
   // find user by id and update the acount status
   console.log(req.body);
@@ -44,8 +59,38 @@ router.post("/new_song/:adminId", (req, res) => {
 });
 
 // endpoint for updating song part. For members only
-router.post("/new_song/:songId", (req, res) => {
-  user.findById(req.params.songIdId, (err, result) => {});
-});
+router.post(
+  "/new_song_part/:songId",
+  upload.single("audio"),
+  (req, res, next) => {
+    if (req.session.passport == undefined)
+      return res.json({ err: "access denied" }).status(400);
+    cloudinary.v2.uploader.upload(
+      req.file.path,
+      { resource_type: "video" },
+      function (error, result) {
+        console.log(result, error);
+        song.findByIdAndUpdate(
+          req.params.songId,
+          {
+            $push: {
+              audioParts: {
+                partName: req.body.partName,
+                audioLink: result.secure_url,
+              },
+            },
+          },
+          (err, result) => {
+            console.log(err, result);
+            if (err) return res.json({ err });
+            song.find((err, result) => {
+              res.json({ msg: "done uploading", result });
+            });
+          }
+        );
+      }
+    );
+  }
+);
 
 module.exports = router;

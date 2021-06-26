@@ -3,6 +3,11 @@ const socket = io("/");
 const uploadButton = document.querySelector(".upload_button");
 const modalContent = document.querySelector(".modal_content");
 const saveButton = document.querySelector(".save");
+
+document.querySelector("#modalBtn").addEventListener("click", () => {
+  $("#exampleModal").modal("show");
+});
+
 if (userData.admin) {
   uploadButton.textContent = "New Song";
   const form = document.createElement("form");
@@ -31,25 +36,41 @@ if (userData.admin) {
   uploadButton.textContent = "Upload Song Part";
   const form = document.createElement("form");
   form.className = "part";
+  var options = [];
+  const select = document.createElement("select");
+  select.className = "form-control";
+  select.id = "exampleFormControlSelect1";
+  userData.uploads.forEach((upload) => {
+    const option = document.createElement("option");
+
+    option.value = upload._id;
+    option.textContent = upload.name;
+    options.push(option);
+    // select.appendChild(option);
+  });
+  form.enctype = 'enctype="multipart/form-data"';
   form.innerHTML = `
   <div class="form-group">
     <label for="exampleFormControlSelect1">Song to Update</label>
-    <select class="form-control" id="exampleFormControlSelect1">
-      <option>Song 1</option>
-      <option>Song 2</option>
-      <option>Song 3</option>
-      <option>Song 4</option>
-      <option>Song 5</option>
-    </select>
+<select class="form-control" id="exampleFormControlSelect">
+${userData.uploads.map((d) => `<option value= "${d._id}" >${d.name}</option>`)}
+</select>
   </div>
   <div class="form-group">
     <label for="exampleFormControlInput1">Part Name</label>
+    <select class="form-control" id="part_name" required=true >
+  <option value="Alto">Alto</option>
+  <option value="Tenor">Tenor</option>
+  <option value="Bass">Bass</option>
+  <option value="Soprano">Soprano</option>
+  <option value="Full Track">Full Track</option>
+</select>
     <input type="text" required=true class="form-control" id="part_name" placeholder="Part Name">
   </div>
   
   <div class="form-group">
     <label for="exampleFormControlFile1">Example file input</label>
-    <input required=true type="file" class="form-control-file" accept=".wav,.mp3,.mp4" id="exampleFormControlFile1">
+    <input required=true type="file" class="form-control-file file" accept=".wav,.mp3,.mp4" id="exampleFormControlFile1">
   </div>
   <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -63,10 +84,25 @@ if (userData.admin) {
 // funcition to update a song part
 // this is used by only the members not the admin
 
-function updateSong() {
+function updateSong(e) {
+  e.preventDefault();
   const formData = new FormData();
   const form = document.querySelector(".new_song_upload");
-  formData.append("audio");
+  formData.append("audio", e.target.querySelector(".file").files[0]);
+  formData.append("partName", e.target.querySelector("input").value);
+  document.querySelector(".alert").style.display = "block";
+  fetch(`/approve/new_song_part/${e.target.querySelector("select").value}`, {
+    method: "POST",
+    body: formData,
+  }).then((response) => {
+    response.json().then((data) => {
+      console.log(data);
+    });
+    document.querySelector(".alert").style.display = "none";
+    // document.querySelector("#exampleModal").modal("hide");
+
+    $("#exampleModal").modal("hide");
+  });
 }
 // function to create a song part
 // this is used by only the admin
@@ -74,7 +110,6 @@ function createSong(e) {
   e.preventDefault(); // prevent the form defaukt action
   const form = e.target;
   console.log(e.target);
-  alert("Please wait");
   fetch(`/approve/new_song/${userData.id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -94,15 +129,19 @@ function createSong(e) {
       songs.result.forEach((song) => {
         const cardTemplate = ` <div class="card" id="${song._id}">
                         <div class="card-body">
-                            <h4 class="card-title">${song.name}</h4>
+                            <h6 class="card-title">${song.name.slice(
+                              0,
+                              100
+                            )}...</h6>
                             <p class="text-muted card-subtitle mb-2">By:${song.composer.slice(
                               0,
                               100
                             )}...</p>
                           
-                            <p class="text-muted card-subtitle mb-2">Created By: ${
-                              song.createdBy
-                            }</p>
+                            <p class="text-muted card-subtitle mb-2">Uploader: ${song.createdBy.slice(
+                              0,
+                              80
+                            )}</p>
                             <p class="card-text">${song.lyrics.slice(
                               0,
                               100
@@ -146,6 +185,9 @@ socket.on("new_member", (...re) => {
 });
 
 function renderUnApproved(pendingUsers) {
+  if (!userData.admin) {
+    return;
+  }
   // accepts only the pending users
   const notifications = document.querySelector(".notifications");
   const notifications_count = document.querySelector(".count");
@@ -166,6 +208,16 @@ function renderUnApproved(pendingUsers) {
 
 window.addEventListener("load", () => {
   setTimeout(() => {
+    document.querySelectorAll(".song_view").forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        $("#" + e.target.href.split("#")[1]).modal("show");
+        e.target.parentElement.parentElement
+          .querySelectorAll("audio")
+          .forEach((audio) => {
+            audio.src = audio.getAttribute("data-src");
+          });
+      });
+    });
     userData.admin
       ? document
           .querySelector(".new_song_upload")
@@ -213,7 +265,7 @@ window.addEventListener("load", () => {
           });
       });
     });
-  }, 800);
+  }, 200);
 });
 
 window.onload = renderUnApproved(userData.pending);
@@ -223,20 +275,64 @@ function renderSongs(songs) {
   songs.forEach((song) => {
     const cardTemplate = ` <div class="card" id="${song._id}">
                         <div class="card-body">
-                            <h4 class="card-title">${song.name}</h4>
+                            <h6 class="card-title">${song.name.slice(
+                              0,
+                              100
+                            )}...</h6>
                             <p class="text-muted card-subtitle mb-2">By:${song.composer.slice(
                               0,
                               100
                             )}...</p>
                             
-                            <p class="text-muted card-subtitle mb-2">Created By: ${
-                              song.createdBy
-                            }</p>
+                            <p class="text-muted card-subtitle mb-2">Uploader: ${song.createdBy.slice(
+                              0,
+                              80
+                            )}</p>
                             <p class="card-text">${song.lyrics.slice(
                               0,
                               150
-                            )}...</p><a class="card-link" href="#">View</a><a class="card-link" href="#"></a>
+                            )}...</p><a class="card-link song_view"  href="#collapseExample${
+      song._id
+    }" role="button" >View</a>
                         </div>
+<!-- Modal -->
+<div class="modal fade" id="collapseExample${
+      song._id
+    }" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">${song.name}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <code class="card-title">${song.composer}</code>
+       <hr>
+         <h6 class="card-title">${song.lyrics}</h6>
+       <hr>
+       ${song.audioParts.map((audio) => {
+         const template = `
+         <div class="card-body audio_card">
+         <h6 class="card-title">${audio.partName}</h6>
+         <audio preload="metadata" controls data-src="${audio.audioLink}">
+  <source data-src="${audio.audioLink}">
+  Your browser does not support the audio element.
+</audio>
+<hr>
+         </div>
+
+         `;
+         return template;
+       })}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 
                     </div>`;
     const div = document.createElement("div");
     div.className = "col mb-1";

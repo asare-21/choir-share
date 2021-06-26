@@ -43,6 +43,7 @@ app.use("public/assets/", express.static(__dirname + "/public/assets"));
 app.use("/public/", express.static(__dirname + "/public/"));
 app.use("/public/css/", express.static(__dirname + "/public/css"));
 app.use(express.json());
+// app.use(express.);
 app.use(express.urlencoded({ extended: false }));
 
 // routes
