@@ -177,6 +177,7 @@ socket.on("new_member", (...re) => {
     }
   });
   notifications_count.textContent = count;
+  window.location = "/library";
   // console.log(count);
   // audio.
 });
