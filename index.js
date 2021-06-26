@@ -50,7 +50,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/", loginRoute);
 app.use("/library", homeRoute);
 app.use("/home", homeRoute);
-app.use("/uploads", uploads);
+// app.use("/uploads", uploads);
 app.use("/logout", loginRoute);
 app.use("/create-account", new_account);
 app.use("/logout", logout);
