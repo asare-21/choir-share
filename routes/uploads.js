@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const { user } = require("../models/userMode");
+const { song } = require("../models/songModel");
 router.get("/", (req, res) => {
   console.log(req.session.passport);
   if (req.session.passport == undefined) {
@@ -67,19 +68,6 @@ router.get("/", (req, res) => {
           });
         });
       });
-      res.render(
-        "uploads.ejs",
-        JSON.stringify({
-          user: {
-            name: req.session.passport.user.name,
-            phone: req.session.passport.user.phone,
-            email: req.session.passport.user.email,
-            uploads: req.session.passport.user.uploads,
-            admin: req.session.passport.user.admin,
-            id: req.session.passport.user.id,
-          },
-        })
-      );
     }
   }
 });

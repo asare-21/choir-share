@@ -98,8 +98,6 @@ function updateSong(e) {
       console.log(data);
     });
     document.querySelector(".alert").style.display = "none";
-    // document.querySelector("#exampleModal").modal("hide");
-
     $("#exampleModal").modal("hide");
   });
 }
@@ -207,6 +205,12 @@ function renderUnApproved(pendingUsers) {
 
 window.addEventListener("load", () => {
   setTimeout(() => {
+    document.querySelectorAll(".close").forEach((cbtn) => {
+      cbtn.addEventListener("click", () => {
+        $(".modal").modal("hide");
+      });
+    });
+
     document.querySelectorAll(".song_view").forEach((elem) => {
       elem.addEventListener("click", (e) => {
         $("#" + e.target.href.split("#")[1]).modal("show");
