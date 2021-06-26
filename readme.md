@@ -8,6 +8,8 @@ Run npm install to install all dependencies.
 
 ```bash
 npm install
+
+npm start
 ```
 
 ## Usage
